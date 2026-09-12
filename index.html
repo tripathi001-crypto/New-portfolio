@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Surabhi Tripathi — Technical Product Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #0a0a14;
+  --bg2: #0f0f1e;
+  --indigo: #4f46e5;
+  --indigo-light: #6366f1;
+  --pink: #ec4899;
+  --cyan: #06b6d4;
+  --amber: #f59e0b;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --border: rgba(255,255,255,0.08);
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.10);
+  --card: rgba(15,15,30,0.85);
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0f0f1e; }
+::-webkit-scrollbar-thumb { background: var(--indigo); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--pink); }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--bg); color: var(--text); overflow-x: hidden; cursor: none; }
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999; opacity: 0.35;
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* CURSOR */
+#cursor-dot {
+  position: fixed; width: 22px; height: 22px;
+  pointer-events: none; z-index: 99999;
+  transform: translate(0, 0);
+  transition: transform 0.05s linear;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+}
+#cursor-dot svg { display: block; }
+#cursor-dot path { fill: #fff; stroke: var(--cyan); stroke-width: 1.5; transition: fill 0.15s, stroke 0.15s; }
+#cursor-dot.hover path { fill: var(--pink); stroke: #fff; }
+
+/* LOADER */
+#loader {
+  position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; z-index: 100000;
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+#loader.hidden { opacity: 0; visibility: hidden; }
+.loader-initials {
+  font-family: var(--font-head); font-size: clamp(4rem, 12vw, 9rem); font-weight: 800;
+  background: linear-gradient(135deg, var(--indigo), var(--pink), var(--cyan), var(--amber));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  background-size: 300% 300%; animation: shimmer 2s linear infinite; letter-spacing: -0.02em;
+}
+.loader-bar-wrap { width: 260px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 999px; margin-top: 2.5rem; overflow: hidden; }
+.loader-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--indigo), var(--pink), var(--cyan), var(--amber)); border-radius: 999px; animation: loadBar 2s ease-out forwards; }
+@keyframes loadBar { to { width: 100%; } }
+@keyframes shimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+#particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  background: rgba(10,10,20,0.7); border-bottom: 1px solid var(--border);
+  transform: translateY(-100%); animation: slideDown 0.6s 2.2s ease forwards;
+}
+@keyframes slideDown { to { transform: translateY(0); } }
+.nav-logo {
+  font-family: var(--font-head); font-weight: 800; font-size: 1.2rem;
+  background: linear-gradient(90deg, var(--indigo-light), var(--pink));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  letter-spacing: -0.02em; text-decoration: none;
+}
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-size: 0.875rem; font-weight: 500; color: var(--muted); text-decoration: none; position: relative; transition: color 0.2s; padding-bottom: 2px; }
+.nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1.5px; background: linear-gradient(90deg, var(--cyan), var(--pink)); transition: width 0.3s ease; }
+.nav-links a:hover { color: var(--text); }
+.nav-links a:hover::after { width: 100%; }
+.nav-burger { display: none; flex-direction: column; gap: 5px; cursor: none; background: none; border: none; }
+.nav-burger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: 0.3s; }
+@media (max-width: 640px) {
+  .nav-links { position: fixed; top: 58px; left: 0; right: 0; flex-direction: column; gap: 0; background: rgba(10,10,20,0.97); border-bottom: 1px solid var(--border); max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .nav-links.open { max-height: 320px; }
+  .nav-links a { padding: 0.9rem 1.75rem; display: block; border-top: 1px solid var(--border); }
+  .nav-burger { display: flex; }
+}
+
+section { position: relative; z-index: 1; padding: 6rem 2rem; max-width: 1200px; margin: 0 auto; }
+@media (max-width: 640px) { section { padding: 4rem 1rem; } }
+.section-label { font-family: var(--font-head); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); margin-bottom: 0.75rem; }
+.section-title { font-family: var(--font-head); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
+.section-title span { color: var(--pink); }
+
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* HERO */
+#hero { min-height: 100vh; display: flex; align-items: center; padding-top: 8rem; padding-bottom: 4rem; max-width: 1200px; margin: 0 auto; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; width: 100%; }
+.avail-tag { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 1rem; border-radius: 999px; border: 1px solid rgba(6,182,212,0.35); background: rgba(6,182,212,0.08); font-size: 0.78rem; font-weight: 500; color: var(--cyan); margin-bottom: 1.5rem; animation: fadeUp 0.8s 2.4s both; }
+.avail-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.4); } }
+.hero-name {
+  font-family: var(--font-head); font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 800; line-height: 1.0; letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #ffffff 20%, var(--indigo-light) 40%, var(--pink) 60%, var(--amber) 80%, #ffffff 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  background-size: 300% 300%; animation: shimmer 4s linear infinite, fadeUp 0.8s 2.5s both; margin-bottom: 0.5rem;
+}
+.hero-role { font-size: clamp(1.1rem, 2.5vw, 1.35rem); color: var(--muted); margin-bottom: 1.5rem; animation: fadeUp 0.8s 2.6s both; }
+.hero-role strong { color: var(--text); font-weight: 600; }
+.hero-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.7; max-width: 480px; margin-bottom: 2rem; animation: fadeUp 0.8s 2.7s both; }
+.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.8s 2.8s both; }
+.btn-primary { padding: 0.75rem 1.75rem; border-radius: 8px; background: linear-gradient(135deg, var(--indigo), var(--pink)); color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 0.9rem; text-decoration: none; border: none; cursor: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 20px rgba(79,70,229,0.4); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(236,72,153,0.5); }
+.btn-outline { padding: 0.75rem 1.75rem; border-radius: 8px; background: transparent; border: 1.5px solid var(--border); color: var(--text); font-family: var(--font-body); font-weight: 500; font-size: 0.9rem; text-decoration: none; cursor: none; transition: border-color 0.2s, background 0.2s; }
+.btn-outline:hover { border-color: var(--cyan); background: rgba(6,182,212,0.06); }
+
+.hero-right { display: flex; justify-content: center; align-items: center; animation: fadeUp 0.8s 2.6s both; }
+.hero-visual-wrap { position: relative; width: 380px; height: 420px; display: flex; align-items: center; justify-content: center; }
+.hero-glow-bg { position: absolute; width: 320px; height: 320px; background: radial-gradient(circle, rgba(79,70,229,0.3) 0%, rgba(236,72,153,0.12) 50%, transparent 70%); border-radius: 50%; filter: blur(30px); animation: orbPulse 4s ease-in-out infinite; }
+@keyframes orbPulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.12); opacity: 1; } }
+.iso-scene { position: relative; z-index: 2; animation: floatScene 5s ease-in-out infinite; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.5)); }
+@keyframes floatScene { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-14px); } }
+.hero-badge { position: absolute; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.7rem; font-weight: 600; backdrop-filter: blur(8px); border: 1px solid; z-index: 3; white-space: nowrap; animation: floatBadge 3s ease-in-out infinite; }
+.hero-badge.b1 { top: 6%; right: 2%; background: rgba(79,70,229,0.2); border-color: rgba(79,70,229,0.5); color: #a5b4fc; animation-delay: 0s; }
+.hero-badge.b2 { bottom: 18%; left: 0%; background: rgba(236,72,153,0.2); border-color: rgba(236,72,153,0.4); color: #f9a8d4; animation-delay: 0.8s; }
+.hero-badge.b3 { top: 28%; left: -2%; background: rgba(6,182,212,0.15); border-color: rgba(6,182,212,0.35); color: #67e8f9; animation-delay: 1.5s; }
+@keyframes floatBadge { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
+
+@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; gap: 3rem; } .hero-right { order: -1; } }
+@media (max-width: 640px) { .hero-visual-wrap { width: 280px; height: 320px; } }
+
+/* MARQUEE */
+.marquee-section { position: relative; z-index: 1; padding: 2rem 0; overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.01); }
+.marquee-track { display: flex; gap: 3rem; white-space: nowrap; animation: marquee 22s linear infinite; }
+.marquee-track:hover { animation-play-state: paused; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-item { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--font-head); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); flex-shrink: 0; }
+.marquee-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--pink); }
+
+/* TOOLS STRIP (replaces old skills bars section) */
+.tools-strip { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.25rem; }
+.tool-chip { padding: 0.4rem 0.9rem; border-radius: 6px; border: 1px solid var(--border); background: var(--glass); font-size: 0.78rem; font-weight: 500; color: var(--muted); transition: transform 0.25s ease, border-color 0.25s, color 0.25s, box-shadow 0.25s; cursor: default; }
+.tool-chip:hover { transform: translateY(-4px); border-color: var(--cyan); color: var(--cyan); box-shadow: 0 4px 15px rgba(6,182,212,0.2); }
+
+/* EXPERIENCE */
+.timeline { position: relative; padding-left: 2.5rem; }
+.timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--indigo), var(--pink), var(--cyan), var(--amber)); border-radius: 2px; }
+.tl-item { position: relative; margin-bottom: 2.5rem; }
+.tl-dot { position: absolute; left: -2.75rem; top: 0.4rem; width: 12px; height: 12px; border-radius: 50%; background: var(--indigo); border: 2px solid var(--bg); box-shadow: 0 0 8px var(--indigo); }
+.exp-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s; }
+.exp-card:hover { transform: translateX(6px); box-shadow: 0 0 30px rgba(79,70,229,0.15); border-color: rgba(99,102,241,0.3); }
+.exp-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.35rem; }
+.exp-title { font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; color: var(--text); }
+.exp-date { font-size: 0.75rem; color: var(--cyan); font-weight: 500; white-space: nowrap; }
+.exp-company { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.75rem; }
+.exp-company strong { color: var(--pink); font-weight: 600; }
+.exp-role-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.2rem; }
+.exp-bullets { list-style: none; }
+.exp-bullets li { position: relative; font-size: 0.85rem; color: var(--muted); line-height: 1.65; margin-bottom: 0.5rem; padding-left: 1rem; }
+.exp-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--indigo-light); font-size: 0.8rem; }
+.badge-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+.badge { padding: 0.2rem 0.65rem; border-radius: 4px; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.badge-indigo { background: rgba(79,70,229,0.18); color: var(--indigo-light); border: 1px solid rgba(79,70,229,0.3); }
+.badge-pink { background: rgba(236,72,153,0.15); color: var(--pink); border: 1px solid rgba(236,72,153,0.25); }
+.badge-cyan { background: rgba(6,182,212,0.12); color: var(--cyan); border: 1px solid rgba(6,182,212,0.2); }
+.badge-amber { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+
+/* WORK / CAREERSARTHII */
+.work-primary { background: var(--card); border: 1px solid var(--glass-border); border-radius: 18px; padding: 2.5rem; margin-bottom: 2.5rem; }
+.work-kicker { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); margin-bottom: 1rem; }
+.work-title { font-family: var(--font-head); font-size: clamp(1.5rem, 3.5vw, 2rem); font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.02em; }
+.work-line { font-size: 0.95rem; color: var(--muted); line-height: 1.75; max-width: 640px; margin-bottom: 0.9rem; }
+.work-line strong { color: var(--text); }
+.work-stats { display: flex; flex-wrap: wrap; gap: 1.75rem; margin: 1.75rem 0; }
+.work-stat-num { font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; color: var(--amber); letter-spacing: -0.02em; }
+.work-stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+.work-cta-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+
+.expand-toggle { display: inline-flex; align-items: center; gap: 0.5rem; background: none; border: 1px solid var(--border); color: var(--cyan); font-family: var(--font-head); font-weight: 700; font-size: 0.85rem; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: none; transition: border-color 0.2s, background 0.2s; }
+.expand-toggle:hover { border-color: var(--cyan); background: rgba(6,182,212,0.06); }
+.expand-toggle .chev { transition: transform 0.3s ease; }
+.expand-toggle.open .chev { transform: rotate(180deg); }
+
+.deep-story { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; }
+.deep-story.open { max-height: 3200px; }
+.deep-story-inner { padding-top: 2rem; margin-top: 2rem; border-top: 1px solid var(--border); }
+
+.think-steps { display: flex; flex-direction: column; gap: 1.5rem; }
+.think-step { padding: 1.5rem; border-radius: 12px; background: rgba(255,255,255,0.02); border-left: 3px solid var(--indigo); }
+.think-step[data-step="2"] { border-left-color: var(--pink); }
+.think-step[data-step="3"] { border-left-color: var(--cyan); }
+.think-step[data-step="4"] { border-left-color: var(--amber); }
+.think-step-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+.think-step-title { font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; line-height: 1.3; }
+.think-step-body { font-size: 0.86rem; color: var(--muted); line-height: 1.7; }
+
+details.tech-depth { margin-top: 1.75rem; border-top: 1px solid var(--border); padding-top: 1.25rem; }
+details.tech-depth summary { cursor: none; font-size: 0.85rem; font-weight: 700; color: var(--pink); list-style: none; display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-head); }
+details.tech-depth summary::-webkit-details-marker { display: none; }
+details.tech-depth summary::before { content: '+ '; }
+details.tech-depth[open] summary::before { content: '– '; }
+.tech-depth-body { margin-top: 1rem; font-size: 0.85rem; color: var(--muted); line-height: 1.75; max-width: 640px; }
+.tech-depth-body p + p { margin-top: 0.8rem; }
+
+.proj-card-label { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pink); margin-bottom: 0.5rem; }
+.case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media (max-width: 800px) { .case-grid { grid-template-columns: 1fr; } }
+.proj-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.75rem; position: relative; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s; cursor: pointer; }
+.proj-card::before { content: ''; position: absolute; top: 0; left: -100%; right: -100%; height: 2px; background: linear-gradient(90deg, transparent, var(--indigo), var(--pink), var(--cyan), transparent); transition: left 0.5s ease; }
+.proj-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+.proj-card:hover::before { left: 0; right: 0; }
+.proj-emoji { font-size: 2rem; margin-bottom: 0.75rem; display: block; }
+.proj-name { font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+.proj-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+.proj-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.proj-tag { padding: 0.2rem 0.55rem; border-radius: 4px; font-size: 0.68rem; background: rgba(99,102,241,0.12); color: var(--indigo-light); border: 1px solid rgba(99,102,241,0.2); font-weight: 500; }
+.proj-card-links { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+.proj-link-btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.7rem; font-weight: 600; text-decoration: none; transition: background 0.2s, transform 0.2s; cursor: pointer; }
+.proj-link-btn.primary { background: rgba(79,70,229,0.25); color: #a5b4fc; border: 1px solid rgba(79,70,229,0.4); }
+
+/* MODAL */
+#modal-overlay { position: fixed; inset: 0; background: rgba(5,5,15,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 50000; display: flex; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; visibility: hidden; transition: opacity 0.35s ease, visibility 0.35s; }
+#modal-overlay.open { opacity: 1; visibility: visible; }
+#modal-box { position: relative; background: #0d0d1f; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; transform: translateY(40px) scale(0.97); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+#modal-overlay.open #modal-box { transform: translateY(0) scale(1); }
+#modal-close { position: sticky; top: 1rem; float: right; margin: 1rem 1rem 0 0; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: var(--muted); font-size: 0.9rem; cursor: none; display: flex; align-items: center; justify-content: center; transition: background 0.2s, color 0.2s, transform 0.2s; z-index: 10; }
+#modal-close:hover { background: rgba(236,72,153,0.2); color: var(--pink); transform: rotate(90deg); }
+.modal-hero { padding: 2.25rem 2.25rem 1.75rem; margin-top: -52px; }
+.modal-emoji { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
+.modal-company-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan); margin-bottom: 0.6rem; }
+.modal-title { font-family: var(--font-head); font-size: clamp(1.3rem, 3.5vw, 1.8rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 0.6rem; }
+.modal-subtitle { font-size: 0.92rem; color: var(--muted); line-height: 1.65; max-width: 540px; }
+.modal-body { padding: 1.75rem 2.25rem 2.25rem; }
+.modal-steps { display: flex; flex-direction: column; gap: 1.75rem; }
+.modal-step { display: flex; gap: 1.1rem; align-items: flex-start; }
+.modal-step-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+.modal-step-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+.modal-step-title { font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+.modal-step-content p { font-size: 0.85rem; color: var(--muted); line-height: 1.72; }
+.modal-cta-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.modal-cta-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.7rem 1.4rem; border-radius: 8px; font-family: var(--font-head); font-size: 0.84rem; font-weight: 700; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; }
+.modal-cta-btn.primary { background: linear-gradient(135deg, var(--indigo), var(--pink)); color: #fff; box-shadow: 0 0 20px rgba(79,70,229,0.35); }
+.modal-cta-btn.primary:hover { transform: translateY(-2px); }
+.modal-cta-btn.secondary { background: rgba(6,182,212,0.1); border: 1.5px solid rgba(6,182,212,0.35); color: var(--cyan); }
+@media (max-width: 600px) { .modal-hero { padding: 2rem 1.25rem 1.5rem; } .modal-body { padding: 1.5rem 1.25rem 2rem; } .modal-step { flex-direction: column; gap: 0.6rem; } }
+
+/* EDUCATION — kept compact, not disproportionate */
+.edu-compact { display: flex; flex-wrap: wrap; gap: 2.5rem; }
+.edu-compact-col { flex: 1; min-width: 240px; }
+.edu-compact-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.9rem; }
+.edu-item-compact { margin-bottom: 0.75rem; font-size: 0.86rem; }
+.edu-item-compact strong { color: var(--text); display: block; }
+.edu-item-compact span { color: var(--muted); font-size: 0.78rem; }
+.cert-line { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.cert-pill-sm { font-size: 0.74rem; padding: 0.28rem 0.7rem; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+
+/* CONTACT */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; gap: 2rem; } .contact-avatar-wrap { display: none; } }
+.contact-cards { display: flex; flex-direction: column; gap: 1rem; }
+.contact-card { display: flex; align-items: center; gap: 1rem; padding: 1.1rem 1.25rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; cursor: pointer; }
+.contact-card:hover { transform: translateX(8px); border-color: rgba(6,182,212,0.3); box-shadow: 0 4px 20px rgba(6,182,212,0.1); }
+.contact-icon { font-size: 1.4rem; width: 40px; text-align: center; flex-shrink: 0; }
+.contact-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.15rem; }
+.contact-val { font-size: 0.9rem; color: var(--text); font-weight: 500; }
+.contact-avatar-wrap { display: flex; justify-content: center; align-items: center; }
+.ripple-wrap { position: relative; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; }
+.ripple { position: absolute; border-radius: 50%; border: 1.5px solid; animation: rippleOut 3s ease-out infinite; }
+.ripple:nth-child(1) { width: 100%; height: 100%; border-color: rgba(79,70,229,0.4); }
+.ripple:nth-child(2) { width: 80%; height: 80%; border-color: rgba(236,72,153,0.35); animation-delay: 0.7s; }
+.ripple:nth-child(3) { width: 60%; height: 60%; border-color: rgba(6,182,212,0.3); animation-delay: 1.4s; }
+@keyframes rippleOut { 0% { transform: scale(0.9); opacity: 1; } 100% { transform: scale(1.35); opacity: 0; } }
+.contact-avatar-inner { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--indigo), var(--pink)); display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-size: 2rem; font-weight: 800; color: #fff; box-shadow: 0 0 30px rgba(79,70,229,0.4); z-index: 2; position: relative; }
+
+footer { position: relative; z-index: 1; text-align: center; padding: 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div id="cursor-dot"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 2 L3 20.5 L8 16 L11.5 22.5 L14.2 21 L10.8 14.7 L17 14.7 Z"/></svg></div>
+
+<div id="loader">
+  <div class="loader-initials">ST</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
+
+<canvas id="particles"></canvas>
+
+<nav id="nav">
+  <a href="#hero" class="nav-logo">Surabhi Tripathi</a>
+  <button class="nav-burger" id="navBurger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="avail-tag"><span class="avail-dot"></span> Open to Opportunities</div>
+      <h1 class="hero-name">Surabhi<br/>Tripathi</h1>
+      <p class="hero-role"><strong>Technical Product Manager</strong> · Fintech · SaaS · AI</p>
+      <p class="hero-desc">Product Manager who builds systems, not just features. 9+ years across fintech, SaaS, and supply chain — and I ship the prototype myself when that's the fastest way to move a decision forward.</p>
+      <div class="hero-ctas">
+        <a href="#experience" class="btn-primary">View Experience</a>
+        <a href="#work" class="btn-outline">See What I Built</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-visual-wrap">
+        <div class="hero-glow-bg"></div>
+        <div class="hero-badge b1">🚀 9+ Years PM</div>
+        <div class="hero-badge b2">✦ 0→1 Builder</div>
+        <div class="hero-badge b3">🤖 AI Products</div>
+        <svg class="iso-scene" viewBox="0 0 340 360" width="340" height="360" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gScreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e1b4b"/><stop offset="100%" stop-color="#0f0f2a"/></linearGradient>
+            <linearGradient id="gBar1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#4f46e5"/><stop offset="100%" stop-color="#ec4899"/></linearGradient>
+            <linearGradient id="gBar2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient>
+            <linearGradient id="gBar3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#ec4899"/></linearGradient>
+            <linearGradient id="gPhone" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient>
+            <linearGradient id="gCard1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e1b4b"/><stop offset="100%" stop-color="#0f172a"/></linearGradient>
+            <filter id="softglow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <polygon points="170,180 310,250 310,270 170,200" fill="#1e1b4b" opacity="0.6"/>
+          <polygon points="30,250 170,180 170,200 30,270" fill="#12112a" opacity="0.6"/>
+          <polygon points="30,250 310,250 310,270 30,270" fill="#0d0c20" opacity="0.8"/>
+          <polygon points="110,60 230,60 250,100 90,100" fill="#1e1b4b" opacity="0.9"/>
+          <rect x="92" y="62" width="156" height="106" rx="6" fill="#0a0a14" stroke="#4f46e5" stroke-width="1.5" opacity="0.9"/>
+          <rect x="96" y="66" width="148" height="98" rx="4" fill="url(#gScreen)"/>
+          <text x="104" y="80" font-family="sans-serif" font-size="6" fill="#94a3b8" font-weight="600">PRODUCT METRICS</text>
+          <rect x="104" y="112" width="26" height="44" rx="2" fill="url(#gBar1)" opacity="0.9">
+            <animate attributeName="height" values="10;44;10" dur="3s" repeatCount="indefinite" begin="0s"/>
+            <animate attributeName="y" values="146;112;146" dur="3s" repeatCount="indefinite" begin="0s"/>
+          </rect>
+          <rect x="136" y="100" width="26" height="56" rx="2" fill="url(#gBar2)" opacity="0.9">
+            <animate attributeName="height" values="10;56;10" dur="3s" repeatCount="indefinite" begin="0.3s"/>
+            <animate attributeName="y" values="146;100;146" dur="3s" repeatCount="indefinite" begin="0.3s"/>
+          </rect>
+          <rect x="168" y="118" width="26" height="38" rx="2" fill="url(#gBar3)" opacity="0.9">
+            <animate attributeName="height" values="10;38;10" dur="3s" repeatCount="indefinite" begin="0.6s"/>
+            <animate attributeName="y" values="146;118;146" dur="3s" repeatCount="indefinite" begin="0.6s"/>
+          </rect>
+          <rect x="200" y="92" width="26" height="64" rx="2" fill="url(#gBar1)" opacity="0.9">
+            <animate attributeName="height" values="10;64;10" dur="3s" repeatCount="indefinite" begin="0.9s"/>
+            <animate attributeName="y" values="146;92;146" dur="3s" repeatCount="indefinite" begin="0.9s"/>
+          </rect>
+          <line x1="104" y1="156" x2="234" y2="156" stroke="#4f46e5" stroke-width="0.8" opacity="0.5"/>
+          <rect x="162" y="168" width="16" height="14" rx="2" fill="#1e1b4b" stroke="#2d2a5e" stroke-width="1"/>
+          <rect x="152" y="180" width="36" height="4" rx="2" fill="#2d2a5e"/>
+          <g transform="translate(30,130)" filter="url(#softglow)">
+            <rect x="0" y="0" width="68" height="76" rx="8" fill="url(#gCard1)" stroke="#4f46e5" stroke-width="1" opacity="0.95"/>
+            <text x="8" y="14" font-family="sans-serif" font-size="5.5" fill="#6366f1" font-weight="700">ROADMAP</text>
+            <rect x="6" y="19" width="16" height="6" rx="2" fill="#4f46e5" opacity="0.7"/>
+            <rect x="26" y="19" width="16" height="6" rx="2" fill="#ec4899" opacity="0.7"/>
+            <rect x="46" y="19" width="16" height="6" rx="2" fill="#06b6d4" opacity="0.7"/>
+            <rect x="6" y="28" width="56" height="8" rx="2" fill="#1e1b4b" stroke="#4f46e5" stroke-width="0.5"/>
+            <text x="10" y="33.5" font-family="sans-serif" font-size="4.5" fill="#94a3b8">SaaS Onboarding</text>
+            <rect x="6" y="39" width="56" height="8" rx="2" fill="#1e1b4b" stroke="#ec4899" stroke-width="0.5"/>
+            <text x="10" y="44.5" font-family="sans-serif" font-size="4.5" fill="#94a3b8">Risk Platform</text>
+            <rect x="6" y="50" width="56" height="8" rx="2" fill="#1e1b4b" stroke="#06b6d4" stroke-width="0.5"/>
+            <text x="10" y="55.5" font-family="sans-serif" font-size="4.5" fill="#94a3b8">Careersarthii</text>
+            <rect x="6" y="61" width="56" height="8" rx="2" fill="#1e1b4b" stroke="#f59e0b" stroke-width="0.5"/>
+            <text x="10" y="66.5" font-family="sans-serif" font-size="4.5" fill="#94a3b8">Payments</text>
+            <animateTransform attributeName="transform" type="translate" values="30,130;30,122;30,130" dur="4s" repeatCount="indefinite"/>
+          </g>
+          <g transform="translate(262,120)" filter="url(#softglow)">
+            <rect x="0" y="0" width="42" height="72" rx="7" fill="url(#gPhone)" stroke="#6366f1" stroke-width="1.2"/>
+            <rect x="3" y="6" width="36" height="56" rx="4" fill="#0a0a14"/>
+            <text x="7" y="15" font-family="sans-serif" font-size="4" fill="#06b6d4" font-weight="600">careersarthii</text>
+            <circle cx="10" cy="23" r="3" fill="#4f46e5" opacity="0.8"/>
+            <circle cx="21" cy="19" r="3" fill="#ec4899" opacity="0.8"/>
+            <circle cx="32" cy="25" r="3" fill="#f59e0b" opacity="0.8"/>
+            <polyline points="10,23 21,19 32,25" stroke="#6366f1" stroke-width="0.8" fill="none"/>
+            <rect x="7" y="31" width="28" height="3" rx="1.5" fill="#1e1b4b"/>
+            <rect x="7" y="31" width="18" height="3" rx="1.5" fill="#4f46e5" opacity="0.8"/>
+            <rect x="7" y="37" width="28" height="3" rx="1.5" fill="#1e1b4b"/>
+            <rect x="7" y="37" width="22" height="3" rx="1.5" fill="#ec4899" opacity="0.8"/>
+            <rect x="7" y="52" width="28" height="8" rx="3" fill="#4f46e5" opacity="0.7"/>
+            <text x="10" y="57.5" font-family="sans-serif" font-size="4.5" fill="#fff">300+ Users 🚀</text>
+            <rect x="14" y="2" width="14" height="3" rx="1.5" fill="#1a1a2e"/>
+            <animateTransform attributeName="transform" type="translate" values="262,120;262,112;262,120" dur="3.5s" repeatCount="indefinite"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="marquee-dot"></span>Retisio</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Firstsource</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Paramount · FarmToPlate</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Cashfree Payments</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>IBM</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Investors Bank</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Accenture</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Google Wallet</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>XLRI</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>IIT Roorkee PM Accelerator</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Retisio</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Firstsource</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Paramount · FarmToPlate</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Cashfree Payments</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>IBM</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Investors Bank</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Accenture</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Google Wallet</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>XLRI</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>IIT Roorkee PM Accelerator</span>
+  </div>
+</div>
+
+<!-- WORK -->
+<section id="work">
+  <div class="section-label">Selected Work</div>
+  <h2 class="section-title reveal">What I've <span>Built</span></h2>
+
+  <!-- CAREERSARTHII -->
+  <div class="work-primary reveal">
+    <span class="work-kicker">⚡ Built &amp; Shipped by Me · Independent Product Founder</span>
+    <h3 class="work-title">Careersarthii</h3>
+
+    <p class="work-line"><strong>What it is:</strong> An AI-powered career platform that helps job seekers improve their resumes, identify skill gaps, and prepare for interviews.</p>
+    <p class="work-line"><strong>The problem:</strong> Generic mock interview tools gave surface-level feedback — no PM-specific depth, no structure coaching, no sense of what a real hiring panel would think.</p>
+    <p class="work-line"><strong>What I built:</strong> I owned this end to end, solo — AI workflows, UX, architecture, LLM integrations, payments, and monetization, from concept to a live paid product.</p>
+
+    <div class="work-stats">
+      <div><div class="work-stat-num">300+</div><div class="work-stat-label">Users</div></div>
+      <div><div class="work-stat-num">₹199</div><div class="work-stat-label">Pro plan, live</div></div>
+      <div><div class="work-stat-num">0→1</div><div class="work-stat-label">Concept to beta, solo</div></div>
+    </div>
+
+    <div class="work-cta-row">
+      <a href="https://careersarthii.com" target="_blank" class="btn-primary">🌐 Visit Live Site</a>
+      <button class="expand-toggle" id="storyToggle">See how I built this <span class="chev">▾</span></button>
+    </div>
+
+    <div class="deep-story" id="storyBody">
+      <div class="deep-story-inner">
+        <div class="think-steps">
+          <div class="think-step" data-step="1">
+            <div class="think-step-label">The Problem</div>
+            <div class="think-step-title">Every mock interview tool felt like a chatbot, not a coach</div>
+            <div class="think-step-body">Job seekers were prepping with tools that gave surface-level feedback — "good answer!" — with zero PM-specific depth or framework coaching.</div>
+          </div>
+          <div class="think-step" data-step="2">
+            <div class="think-step-label">The Insight</div>
+            <div class="think-step-title">ATS optimization gets you the interview. Confidence gets you the offer.</div>
+            <div class="think-step-body">Most tools solve resume or interview prep, not both. The real drop-off happens in the gap between getting shortlisted and freezing in the room.</div>
+          </div>
+          <div class="think-step" data-step="3">
+            <div class="think-step-label">The Decision</div>
+            <div class="think-step-title">Build one platform, with AI that probes like a PM interviewer</div>
+            <div class="think-step-body">Scoped v1 to two jobs: scan resumes against real JDs for ATS gaps, and run structured mock interviews that push on STAR structure, product sense, and metrics — not generic praise.</div>
+          </div>
+          <div class="think-step" data-step="4">
+            <div class="think-step-label">The Outcome</div>
+            <div class="think-step-title">300+ users, a live paid tier, grown through word of mouth</div>
+            <div class="think-step-body">No paid marketing. Adoption spread through PM communities. The insight held — users didn't just want a tool, they wanted to feel prepared.</div>
+          </div>
+        </div>
+
+        <details class="tech-depth">
+          <summary>Technical depth</summary>
+          <div class="tech-depth-body">
+            <p>Built with React on the frontend and OpenAI's API for resume analysis, skill-gap detection, and interview simulation. The workflow chains multiple prompts — one to parse and score the resume against a target role, another to generate role-specific mock interview questions, and a third to score responses and produce structured, actionable feedback rather than generic praise.</p>
+            <p>Payments and the ₹199 Pro plan run through a self-integrated checkout flow. I designed the full UX myself, then handled deployment, monitoring, and iteration based on real user behavior — without a team.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPACT CASE STUDIES -->
+  <div class="case-grid">
+    <div class="proj-card reveal" onclick="openModal('mmt')">
+      <div class="proj-card-label">✦ Case Study</div>
+      <span class="proj-emoji">✈️</span>
+      <div class="proj-name">MakeMyTrip – Seamless Group Travel</div>
+      <div class="proj-desc">How do you get 6 friends to agree on a flight? A deep-dive into group travel UX — research, journey mapping, and feature design for collaborative booking.</div>
+      <div class="proj-tags"><span class="proj-tag">User Research</span><span class="proj-tag">PRD</span><span class="proj-tag">B2C</span></div>
+      <div class="proj-card-links"><span class="proj-link-btn primary">📖 Read Case Study</span></div>
+    </div>
+    <div class="proj-card reveal" onclick="openModal('shaadi')">
+      <div class="proj-card-label">✦ Case Study</div>
+      <span class="proj-emoji">💍</span>
+      <div class="proj-name">Shaadi.com – Trust Badge System</div>
+      <div class="proj-desc">In a space where trust is everything, how do you design verification that feels safe, not intrusive? A study on trust signals and safety-first UX.</div>
+      <div class="proj-tags"><span class="proj-tag">Trust & Safety</span><span class="proj-tag">UX Design</span><span class="proj-tag">B2C</span></div>
+      <div class="proj-card-links"><span class="proj-link-btn primary">📖 Read Case Study</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODALS -->
+<div id="modal-overlay" onclick="closeModal()">
+  <div id="modal-box" onclick="event.stopPropagation()">
+    <button id="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<div id="tpl-mmt" style="display:none">
+  <div class="modal-hero" style="background:linear-gradient(135deg,rgba(79,70,229,0.25),rgba(6,182,212,0.15))">
+    <div class="modal-emoji">✈️</div>
+    <div class="modal-company-tag">MakeMyTrip · B2C Travel</div>
+    <h2 class="modal-title">Enabling Seamless Group Travel</h2>
+    <p class="modal-subtitle">How do you get 6 friends to agree on a flight — and actually book it together?</p>
+  </div>
+  <div class="modal-body">
+    <div class="modal-steps">
+      <div class="modal-step"><div class="modal-step-icon" style="background:rgba(236,72,153,0.15);color:var(--pink)">🔍</div>
+        <div><div class="modal-step-label">The Problem</div><div class="modal-step-title">Group travel is broken by design</div>
+        <p>Individual booking flows assume one decision-maker. Group trips involve multiple people, budgets, and preferences — users were bouncing to spreadsheets and screenshots to coordinate.</p></div></div>
+      <div class="modal-step"><div class="modal-step-icon" style="background:rgba(79,70,229,0.15);color:var(--indigo-light)">💡</div>
+        <div><div class="modal-step-label">The Insight</div><div class="modal-step-title">The coordinator is the real user — not the group</div>
+        <p>Research showed one person always organizes. The product needed to serve them first — proposing options, collecting votes, locking in decisions — without the group leaving the app.</p></div></div>
+      <div class="modal-step"><div class="modal-step-icon" style="background:rgba(6,182,212,0.12);color:var(--cyan)">⚙️</div>
+        <div><div class="modal-step-label">The Solution</div><div class="modal-step-title">A collaborative booking layer on top of existing flows</div>
+        <p>Designed shareable trip proposals, in-app preference voting, budget pooling, and a group lock-in mechanism — without disrupting the existing solo booking experience.</p></div></div>
+      <div class="modal-step"><div class="modal-step-icon" style="background:rgba(245,158,11,0.12);color:var(--amber)">📈</div>
+        <div><div class="modal-step-label">The Outcome</div><div class="modal-step-title">One coordination flow, replacing scattered external tools</div>
+        <p>Group organisers could propose, vote, and lock in a trip inside a single flow — replacing the spreadsheets and screenshot threads used before.</p></div></div>
+    </div>
+    <div class="modal-cta-row">
+      <a href="https://drive.google.com/file/d/1RXI6R8Rq0cUCiyyQj_vdsOO_g0fz4ywJ/view" target="_blank" class="modal-cta-btn primary">📄 Read Full Case Study PDF</a>
+      <a href="https://lovable.dev/projects/2c2316e9-4fa6-4e13-bc9d-2950f257f13d" target="_blank" class="modal-cta-btn secondary">🎨 View Lovable Design</a>
+    </div>
+  </div>
+</div>
+
+<div id="tpl-shaadi" style="display:none">
+  <div class="modal-hero" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(245,158,11,0.1))">
+    <div class="modal-emoji">💍</div>
+    <div class="modal-company-tag">Shaadi.com · B2C Matchmaking</div>
+    <h2 class="modal-title">Building Trust Through Verification</h2>
+    <p class="modal-subtitle">In a space where trust is everything — how do you design a badge system that feels safe, not intrusive?</p>
+  </div>
+  <div class="modal-body">
+    <div class="modal-steps">
+      <div class="modal-step"><div class="modal-step-icon" style="background:rgba(236,72,153,0.15);color:var(--pink)">🔍</div>
+        <div><div class="modal-step-label">The Problem</div><div class="modal-step-title">Fake profiles were hurting trust and retention</div>
+        <p>Fake or misrepresented profiles weren't just a UX issue — they were a safety and business risk. Users were disengaging after matches felt untrustworthy.</p></div></div>
+      <div class="modal-step"><div class="modal-step-icon" style="background:rgba(79,70,229,0.15);color:var(--indigo-light)">💡</div>
+        <div><div class="modal-step-label">The Insight</div><div class="modal-step-title">Trust is felt before it's read — it's visual, not textual</div>
+        <p>Users scan for visual signals, not disclaimers. The insight was a tiered badge system communicating credibility at a glance, with progressive disclosure for more detail.</p></div></div>
+      <div class="modal-step"><div class="modal-step-icon" style="background:rgba(6,182,212,0.12);color:var(--cyan)">⚙️</div>
+        <div><div class="modal-step-label">The Solution</div><div class="modal-step-title">A 3-tier trust badge framework</div>
+        <p>Designed three levels — ID Verified, Photo Verified, Premium Verified — each with distinct visual treatment. Higher trust required more steps, framed as a privilege, not a burden.</p></div></div>
+      <div class="modal-step"><div class="modal-step-icon" style="background:rgba(245,158,11,0.12);color:var(--amber)">📈</div>
+        <div><div class="modal-step-label">The Outcome</div><div class="modal-step-title">A clearer, layered trust signal across profiles</div>
+        <p>The badge system gave users a visual way to gauge credibility at a glance, paired with a reporting flow tied to badge revocation.</p></div></div>
+    </div>
+    <div class="modal-cta-row">
+      <a href="https://drive.google.com/file/d/1FPhRTDGUr-W0ybxwbdDGeGwZvajwaKeA/view" target="_blank" class="modal-cta-btn primary">📄 Read Full Case Study PDF</a>
+      <a href="https://shaadi-trust-visuals.lovable.app/" target="_blank" class="modal-cta-btn secondary">🎨 View Live Design</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Career</div>
+  <h2 class="section-title reveal">Work <span>Experience</span></h2>
+  <div class="timeline">
+
+    <!-- RETISIO -->
+    <div class="tl-item reveal">
+      <div class="tl-dot" style="background:var(--indigo);box-shadow:0 0 8px var(--indigo)"></div>
+      <div class="exp-card">
+        <div class="exp-top"><div class="exp-title">Technical Product Manager</div><div class="exp-date">Dec 2025 – Apr 2026</div></div>
+        <div class="exp-company"><strong>Retisio</strong> · Commerce SaaS</div>
+        <ul class="exp-bullets">
+          <li>Drove the 0→1 multi-tenant SaaS transformation — mapped the full tenant lifecycle before engineering started, cutting client onboarding from 6–12 months to self-serve in days</li>
+          <li>Shipped the Micamp payment integration end-to-end in 4 weeks — owned partner onboarding, tested authentication, authorization, and refund APIs, and demonstrated the full flow live in production</li>
+          <li>Introduced Lovable and Claude Code to the engineering org — the team had no prior exposure; partnered with the CTO to establish AI-assisted development workflows</li>
+          <li>Built AI-generated UX prototypes in Lovable when design resources were delayed, presented them to client Matcotools, and secured full sign-off — keeping delivery on track</li>
+          <li>Brought product structure to the Search Intelligence (SIT) initiative — defined use cases and load-testing priorities across vector and neural search alongside engineering and data science</li>
+          <li>Operated as the connective tissue between CEO, CTO, and engineering — translated headless commerce and tenant isolation constraints into sprint-ready specs</li>
+        </ul>
+        <div class="badge-chips">
+          <span class="badge badge-indigo">Multi-tenant SaaS</span>
+          <span class="badge badge-pink">Payment Integration</span>
+          <span class="badge badge-cyan">Search Intelligence</span>
+          <span class="badge badge-amber">AI Tooling</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIRSTSOURCE -->
+    <div class="tl-item reveal">
+      <div class="tl-dot" style="background:var(--pink);box-shadow:0 0 8px var(--pink)"></div>
+      <div class="exp-card">
+        <div class="exp-top"><div class="exp-title">Product Manager, Contract</div><div class="exp-date">Apr 2025 – Oct 2025</div></div>
+        <div class="exp-company"><strong>Firstsource</strong> · BPO & Analytics</div>
+        <ul class="exp-bullets">
+          <li>Designed a CEO/CXO dashboard integrating 30+ KPIs across Salesforce and HRMS for real-time visibility into revenue and operations</li>
+          <li>Automated the underlying data pipelines, cutting reporting effort by 80% and enabling faster executive decisions</li>
+        </ul>
+        <div class="badge-chips">
+          <span class="badge badge-pink">Executive Dashboards</span>
+          <span class="badge badge-indigo">Data Pipelines</span>
+          <span class="badge badge-cyan">Salesforce + HRMS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARAMOUNT / FARMTOPLATE -->
+    <div class="tl-item reveal">
+      <div class="tl-dot" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div>
+      <div class="exp-card">
+        <div class="exp-top"><div class="exp-title">Product Manager, FarmToPlate</div><div class="exp-date">Jan 2024 – Mar 2025</div></div>
+        <div class="exp-company"><strong>Paramount Software Solutions</strong> · Supply Chain Tech</div>
+        <ul class="exp-bullets">
+          <li>Led the monolith-to-microservices migration, reducing platform downtime by 30% and unblocking three parallel feature teams</li>
+          <li>Embedded OTIF tracking and real-time route optimization into delivery workflows, improving delivery accuracy by 20% and cutting food wastage by 15%</li>
+          <li>Collaborated with data scientists to embed AI analytics into operator workflows, reducing order completion time by 25% and improving customer retention by 15%</li>
+          <li>Defined acceptance criteria for ML-powered features that non-technical stakeholders could validate before release</li>
+        </ul>
+        <div class="badge-chips">
+          <span class="badge badge-cyan">Supply Chain</span>
+          <span class="badge badge-indigo">Microservices</span>
+          <span class="badge badge-pink">AI/ML Integration</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASHFREE -->
+    <div class="tl-item reveal">
+      <div class="tl-dot" style="background:var(--amber);box-shadow:0 0 8px var(--amber)"></div>
+      <div class="exp-card">
+        <div class="exp-top"><div class="exp-title">Assistant Manager, Risk and Compliance — Payments Product</div><div class="exp-date">Aug 2022 – Nov 2023</div></div>
+        <div class="exp-company"><strong>Cashfree Payments</strong> · Fintech</div>
+        <ul class="exp-bullets">
+          <li>Owned product strategy for an AI-powered risk intelligence platform, increasing threat detection efficiency by 20% and cutting compliance escalations from 350 to 230 a month</li>
+          <li>Redesigned the merchant risk scoring logic, reducing noisy monthly alerts by 50% and improving classification accuracy</li>
+          <li>Improved real-time monitoring accuracy by 30%, which reduced merchant churn by 10%</li>
+          <li>Coordinated cross-functional delivery with legal, compliance, data science, and engineering under regulatory timelines</li>
+        </ul>
+        <div class="badge-chips">
+          <span class="badge badge-amber">Risk Intelligence</span>
+          <span class="badge badge-pink">Merchant Scoring</span>
+          <span class="badge badge-cyan">Fraud Detection</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- IBM -->
+    <div class="tl-item reveal">
+      <div class="tl-dot" style="background:var(--indigo-light);box-shadow:0 0 8px var(--indigo-light)"></div>
+      <div class="exp-card">
+        <div class="exp-top"><div class="exp-title">Senior AML/KYC Analyst</div><div class="exp-date">Aug 2020 – Jul 2022</div></div>
+        <div class="exp-company"><strong>IBM</strong> · Client: Investors Bank</div>
+        <ul class="exp-bullets">
+          <li>Partnered with data scientists to tune fraud detection algorithms, cutting false positives by 20% and improving onboarding accuracy</li>
+          <li>Built real-time risk intelligence dashboards, improving decision accuracy by 15% and reducing manual review time by 40%</li>
+          <li>Delivered directly to a US banking client under IBM's consulting structure, building the stakeholder rigor that shaped the rest of my PM career</li>
+        </ul>
+        <div class="badge-chips">
+          <span class="badge badge-indigo">AML/KYC</span>
+          <span class="badge badge-cyan">Risk Dashboards</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCENTURE -->
+    <div class="tl-item reveal">
+      <div class="tl-dot" style="background:var(--pink);box-shadow:0 0 8px var(--pink)"></div>
+      <div class="exp-card">
+        <div class="exp-top"><div class="exp-title">Senior Transaction Processing Analyst</div><div class="exp-date">Jul 2019 – Mar 2020</div></div>
+        <div class="exp-role-sub">Transaction Processing Analyst · Apr 2017 – Jun 2019</div>
+        <div class="exp-company"><strong>Accenture</strong> · Client: Google Wallet</div>
+        <ul class="exp-bullets">
+          <li>Conducted gap analysis on risk and compliance workflows for Google Wallet, surfacing issues that shaped two quarters of the feature roadmap</li>
+          <li>Identified automation opportunities that removed manual handoff points and reduced operational friction</li>
+          <li>Learned to influence without formal authority — drove roadmap alignment between engineering leads and risk SMEs, a skill that compressed my growth trajectory in later roles</li>
+        </ul>
+        <div class="badge-chips">
+          <span class="badge badge-pink">Google Wallet</span>
+          <span class="badge badge-indigo">Risk & Compliance</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tools-strip reveal" style="margin-top:2.5rem">
+    <span class="tool-chip">Jira</span><span class="tool-chip">Azure DevOps</span><span class="tool-chip">Figma</span>
+    <span class="tool-chip">Lovable</span><span class="tool-chip">Claude Code</span><span class="tool-chip">SQL</span>
+    <span class="tool-chip">Power BI</span><span class="tool-chip">Salesforce</span><span class="tool-chip">React</span>
+    <span class="tool-chip">OpenAI API</span><span class="tool-chip">Agile / Scrum</span>
+  </div>
+</section>
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label">Academic</div>
+  <h2 class="section-title reveal">Education &amp; Certifications</h2>
+  <div class="edu-compact reveal">
+    <div class="edu-compact-col">
+      <div class="edu-compact-label">Education</div>
+      <div class="edu-item-compact"><strong>MBA, Business Administration</strong><span>Mahatma Gandhi University · 2015</span></div>
+      <div class="edu-item-compact"><strong>B.Sc., Computer Science &amp; Mathematics</strong><span>CSJM University · 2012</span></div>
+    </div>
+    <div class="edu-compact-col">
+      <div class="edu-compact-label">Certifications</div>
+      <div class="cert-line">
+        <span class="cert-pill-sm">Product Management — XLRI</span>
+        <span class="cert-pill-sm">IIT Roorkee PM Accelerator</span>
+        <span class="cert-pill-sm">PMP</span>
+        <span class="cert-pill-sm">Agile Scrum Master</span>
+        <span class="cert-pill-sm">Lean Six Sigma Green Belt</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Let's Connect</div>
+  <h2 class="section-title reveal">Get in <span>Touch</span></h2>
+  <div class="contact-grid">
+    <div class="contact-cards">
+      <div class="contact-card reveal" onclick="window.location.href='mailto:surabhitripathi1002@gmail.com'">
+        <div class="contact-icon">📧</div>
+        <div><div class="contact-label">Email</div><div class="contact-val">surabhitripathi1002@gmail.com</div></div>
+      </div>
+      <div class="contact-card reveal" onclick="window.location.href='tel:+919113218373'">
+        <div class="contact-icon">📱</div>
+        <div><div class="contact-label">Phone</div><div class="contact-val">+91 9113218373</div></div>
+      </div>
+      <div class="contact-card reveal" onclick="window.open('https://www.linkedin.com/in/tripathi-surabhi/','_blank')">
+        <div class="contact-icon">💼</div>
+        <div><div class="contact-label">LinkedIn</div><div class="contact-val" style="color:var(--cyan)">linkedin.com/in/tripathi-surabhi</div></div>
+      </div>
+    </div>
+    <div class="contact-avatar-wrap reveal">
+      <div class="ripple-wrap"><div class="ripple"></div><div class="ripple"></div><div class="ripple"></div><div class="contact-avatar-inner">ST</div></div>
+    </div>
+  </div>
+</section>
+
+<footer><p>Crafted with ✦ by Surabhi Tripathi · Technical Product Manager</p></footer>
+
+<script>
+window.addEventListener('load', () => { setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2200); });
+
+const dot = document.getElementById('cursor-dot');
+document.addEventListener('mousemove', e => { dot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 2}px)`; });
+document.querySelectorAll('a, button, .exp-card, .proj-card, .contact-card, .tool-chip').forEach(el => {
+  el.addEventListener('mouseenter', () => dot.classList.add('hover'));
+  el.addEventListener('mouseleave', () => dot.classList.remove('hover'));
+});
+
+const nav = document.getElementById('nav');
+const navBurger = document.getElementById('navBurger');
+const navLinks = document.getElementById('navLinks');
+navBurger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+const colors = ['#4f46e5','#ec4899','#06b6d4','#f59e0b'];
+let W, H, particles = [];
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+function createParticle() { return { x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5, r: Math.random()*2.5+1, color: colors[Math.floor(Math.random()*colors.length)], alpha: Math.random()*0.6+0.2 }; }
+for (let i=0;i<80;i++) particles.push(createParticle());
+function drawParticles() {
+  ctx.clearRect(0,0,W,H);
+  for (let i=0;i<particles.length;i++) {
+    const p = particles[i]; p.x += p.vx; p.y += p.vy;
+    if (p.x<0||p.x>W) p.vx*=-1; if (p.y<0||p.y>H) p.vy*=-1;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.color; ctx.globalAlpha=p.alpha; ctx.fill();
+    for (let j=i+1;j<particles.length;j++) {
+      const q = particles[j]; const dx=p.x-q.x, dy=p.y-q.y; const dist=Math.sqrt(dx*dx+dy*dy);
+      if (dist<120) { ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+        ctx.strokeStyle = colors[i%4]; ctx.globalAlpha=(1-dist/120)*0.18; ctx.lineWidth=0.8; ctx.stroke(); }
+    }
+  }
+  ctx.globalAlpha=1; requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); io.unobserve(entry.target); } });
+}, { threshold: 0.1 });
+revealEls.forEach(el => io.observe(el));
+
+const storyToggle = document.getElementById('storyToggle');
+const storyBody = document.getElementById('storyBody');
+storyToggle.addEventListener('click', () => {
+  storyBody.classList.toggle('open');
+  storyToggle.classList.toggle('open');
+  storyToggle.innerHTML = storyBody.classList.contains('open') ? 'Hide the full story <span class="chev">▾</span>' : 'See how I built this <span class="chev">▾</span>';
+});
+
+const modalOverlay = document.getElementById('modal-overlay');
+const modalContent = document.getElementById('modal-content');
+function openModal(id) {
+  const src = document.getElementById('tpl-' + id);
+  if (!src) return;
+  modalContent.innerHTML = src.innerHTML;
+  modalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('modal-box').scrollTop = 0;
+}
+function closeModal() { modalOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
