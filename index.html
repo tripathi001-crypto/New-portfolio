@@ -42,15 +42,15 @@ body::before {
 
 /* CURSOR */
 #cursor-dot {
-  position: fixed; width: 8px; height: 8px; background: #fff; border-radius: 50%;
-  pointer-events: none; z-index: 99999; transform: translate(-50%,-50%);
-  box-shadow: 0 0 0 1.5px rgba(6,182,212,0.9), 0 0 0 5px rgba(6,182,212,0.18), 0 0 6px rgba(0,0,0,0.4);
-  transition: width 0.15s, height 0.15s, background 0.15s, box-shadow 0.15s;
+  position: fixed; width: 22px; height: 22px;
+  pointer-events: none; z-index: 99999;
+  transform: translate(0, 0);
+  transition: transform 0.05s linear;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
 }
-#cursor-dot.hover {
-  width: 10px; height: 10px; background: #fff;
-  box-shadow: 0 0 0 1.5px rgba(236,72,153,0.95), 0 0 0 7px rgba(236,72,153,0.2), 0 0 8px rgba(0,0,0,0.4);
-}
+#cursor-dot svg { display: block; }
+#cursor-dot path { fill: #fff; stroke: var(--cyan); stroke-width: 1.5; transition: fill 0.15s, stroke 0.15s; }
+#cursor-dot.hover path { fill: var(--pink); stroke: #fff; }
 
 /* LOADER */
 #loader {
@@ -175,17 +175,12 @@ section { position: relative; z-index: 1; padding: 6rem 2rem; max-width: 1200px;
 .exp-bullets { list-style: none; }
 .exp-bullets li { position: relative; font-size: 0.85rem; color: var(--muted); line-height: 1.65; margin-bottom: 0.5rem; padding-left: 1rem; }
 .exp-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--indigo-light); font-size: 0.8rem; }
-.exp-bullets.extra { display: none; margin-top: 0.5rem; }
-.exp-bullets.extra.open { display: block; }
 .badge-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
 .badge { padding: 0.2rem 0.65rem; border-radius: 4px; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 .badge-indigo { background: rgba(79,70,229,0.18); color: var(--indigo-light); border: 1px solid rgba(79,70,229,0.3); }
 .badge-pink { background: rgba(236,72,153,0.15); color: var(--pink); border: 1px solid rgba(236,72,153,0.25); }
 .badge-cyan { background: rgba(6,182,212,0.12); color: var(--cyan); border: 1px solid rgba(6,182,212,0.2); }
 .badge-amber { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
-.show-more-btn { margin-top: 0.9rem; background: none; border: none; color: var(--cyan); font-size: 0.78rem; font-weight: 600; cursor: none; display: inline-flex; align-items: center; gap: 0.3rem; padding: 0; font-family: var(--font-body); }
-.show-more-btn::after { content: '+ Show more'; }
-.show-more-btn.open::after { content: '– Show less'; }
 
 /* WORK / CAREERSARTHII */
 .work-primary { background: var(--card); border: 1px solid var(--glass-border); border-radius: 18px; padding: 2.5rem; margin-bottom: 2.5rem; }
@@ -300,7 +295,7 @@ footer { position: relative; z-index: 1; text-align: center; padding: 2rem; bord
 </head>
 <body>
 
-<div id="cursor-dot"></div>
+<div id="cursor-dot"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 2 L3 20.5 L8 16 L11.5 22.5 L14.2 21 L10.8 14.7 L17 14.7 Z"/></svg></div>
 
 <div id="loader">
   <div class="loader-initials">ST</div>
@@ -314,8 +309,8 @@ footer { position: relative; z-index: 1; text-align: center; padding: 2rem; bord
   <button class="nav-burger" id="navBurger" aria-label="Menu"><span></span><span></span><span></span></button>
   <ul class="nav-links" id="navLinks">
     <li><a href="#hero">Home</a></li>
-    <li><a href="#experience">Experience</a></li>
     <li><a href="#work">Work</a></li>
+    <li><a href="#experience">Experience</a></li>
     <li><a href="#education">Education</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -440,155 +435,6 @@ footer { position: relative; z-index: 1; text-align: center; padding: 2rem; bord
     <span class="marquee-item"><span class="marquee-dot"></span>IIT Roorkee PM Accelerator</span>
   </div>
 </div>
-
-<!-- EXPERIENCE -->
-<section id="experience">
-  <div class="section-label">Career</div>
-  <h2 class="section-title reveal">Work <span>Experience</span></h2>
-  <div class="timeline">
-
-    <!-- RETISIO -->
-    <div class="tl-item reveal">
-      <div class="tl-dot" style="background:var(--indigo);box-shadow:0 0 8px var(--indigo)"></div>
-      <div class="exp-card">
-        <div class="exp-top"><div class="exp-title">Technical Product Manager</div><div class="exp-date">Dec 2025 – Apr 2026</div></div>
-        <div class="exp-company"><strong>Retisio</strong> · Commerce SaaS</div>
-        <ul class="exp-bullets">
-          <li>Drove the 0→1 multi-tenant SaaS transformation — mapped the full tenant lifecycle before engineering started, cutting client onboarding from 6–12 months to self-serve in days</li>
-          <li>Shipped the Micamp payment integration end-to-end in 4 weeks — owned partner onboarding, tested authentication, authorization, and refund APIs, and demonstrated the full flow live in production</li>
-          <li>Introduced Lovable and Claude Code to the engineering org — the team had no prior exposure; partnered with the CTO to establish AI-assisted development workflows</li>
-        </ul>
-        <ul class="exp-bullets extra" id="extra-retisio">
-          <li>Built AI-generated UX prototypes in Lovable when design resources were delayed, presented them to client Matcotools, and secured full sign-off — keeping delivery on track</li>
-          <li>Brought product structure to the Search Intelligence (SIT) initiative — defined use cases and load-testing priorities across vector and neural search alongside engineering and data science</li>
-          <li>Operated as the connective tissue between CEO, CTO, and engineering — translated headless commerce and tenant isolation constraints into sprint-ready specs</li>
-        </ul>
-        <button class="show-more-btn" data-target="extra-retisio"></button>
-        <div class="badge-chips">
-          <span class="badge badge-indigo">Multi-tenant SaaS</span>
-          <span class="badge badge-pink">Payment Integration</span>
-          <span class="badge badge-cyan">Search Intelligence</span>
-          <span class="badge badge-amber">AI Tooling</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- FIRSTSOURCE -->
-    <div class="tl-item reveal">
-      <div class="tl-dot" style="background:var(--pink);box-shadow:0 0 8px var(--pink)"></div>
-      <div class="exp-card">
-        <div class="exp-top"><div class="exp-title">Product Manager, Contract</div><div class="exp-date">Apr 2025 – Oct 2025</div></div>
-        <div class="exp-company"><strong>Firstsource</strong> · BPO & Analytics</div>
-        <ul class="exp-bullets">
-          <li>Designed a CEO/CXO dashboard integrating 30+ KPIs across Salesforce and HRMS for real-time visibility into revenue and operations</li>
-          <li>Automated the underlying data pipelines, cutting reporting effort by 80% and enabling faster executive decisions</li>
-        </ul>
-        <div class="badge-chips">
-          <span class="badge badge-pink">Executive Dashboards</span>
-          <span class="badge badge-indigo">Data Pipelines</span>
-          <span class="badge badge-cyan">Salesforce + HRMS</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- PARAMOUNT / FARMTOPLATE -->
-    <div class="tl-item reveal">
-      <div class="tl-dot" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div>
-      <div class="exp-card">
-        <div class="exp-top"><div class="exp-title">Product Manager, FarmToPlate</div><div class="exp-date">Jan 2024 – Mar 2025</div></div>
-        <div class="exp-company"><strong>Paramount Software Solutions</strong> · Supply Chain Tech</div>
-        <ul class="exp-bullets">
-          <li>Led the monolith-to-microservices migration, reducing platform downtime by 30% and unblocking three parallel feature teams</li>
-          <li>Embedded OTIF tracking and real-time route optimization into delivery workflows, improving delivery accuracy by 20% and cutting food wastage by 15%</li>
-          <li>Collaborated with data scientists to embed AI analytics into operator workflows, reducing order completion time by 25% and improving customer retention by 15%</li>
-        </ul>
-        <ul class="exp-bullets extra" id="extra-paramount">
-          <li>Defined acceptance criteria for ML-powered features that non-technical stakeholders could validate before release</li>
-        </ul>
-        <button class="show-more-btn" data-target="extra-paramount"></button>
-        <div class="badge-chips">
-          <span class="badge badge-cyan">Supply Chain</span>
-          <span class="badge badge-indigo">Microservices</span>
-          <span class="badge badge-pink">AI/ML Integration</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- CASHFREE -->
-    <div class="tl-item reveal">
-      <div class="tl-dot" style="background:var(--amber);box-shadow:0 0 8px var(--amber)"></div>
-      <div class="exp-card">
-        <div class="exp-top"><div class="exp-title">Assistant Manager, Risk and Compliance — Payments Product</div><div class="exp-date">Aug 2022 – Nov 2023</div></div>
-        <div class="exp-company"><strong>Cashfree Payments</strong> · Fintech</div>
-        <ul class="exp-bullets">
-          <li>Owned product strategy for an AI-powered risk intelligence platform, increasing threat detection efficiency by 20% and cutting compliance escalations from 350 to 230 a month</li>
-          <li>Redesigned the merchant risk scoring logic, reducing noisy monthly alerts by 50% and improving classification accuracy</li>
-          <li>Improved real-time monitoring accuracy by 30%, which reduced merchant churn by 10%</li>
-        </ul>
-        <ul class="exp-bullets extra" id="extra-cashfree">
-          <li>Coordinated cross-functional delivery with legal, compliance, data science, and engineering under regulatory timelines</li>
-        </ul>
-        <button class="show-more-btn" data-target="extra-cashfree"></button>
-        <div class="badge-chips">
-          <span class="badge badge-amber">Risk Intelligence</span>
-          <span class="badge badge-pink">Merchant Scoring</span>
-          <span class="badge badge-cyan">Fraud Detection</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- IBM -->
-    <div class="tl-item reveal">
-      <div class="tl-dot" style="background:var(--indigo-light);box-shadow:0 0 8px var(--indigo-light)"></div>
-      <div class="exp-card">
-        <div class="exp-top"><div class="exp-title">Senior AML/KYC Analyst</div><div class="exp-date">Aug 2020 – Jul 2022</div></div>
-        <div class="exp-company"><strong>IBM</strong> · Client: Investors Bank</div>
-        <ul class="exp-bullets">
-          <li>Partnered with data scientists to tune fraud detection algorithms, cutting false positives by 20% and improving onboarding accuracy</li>
-          <li>Built real-time risk intelligence dashboards, improving decision accuracy by 15% and reducing manual review time by 40%</li>
-        </ul>
-        <ul class="exp-bullets extra" id="extra-ibm">
-          <li>Delivered directly to a US banking client under IBM's consulting structure, building the stakeholder rigor that shaped the rest of my PM career</li>
-        </ul>
-        <button class="show-more-btn" data-target="extra-ibm"></button>
-        <div class="badge-chips">
-          <span class="badge badge-indigo">AML/KYC</span>
-          <span class="badge badge-cyan">Risk Dashboards</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ACCENTURE -->
-    <div class="tl-item reveal">
-      <div class="tl-dot" style="background:var(--pink);box-shadow:0 0 8px var(--pink)"></div>
-      <div class="exp-card">
-        <div class="exp-top"><div class="exp-title">Senior Transaction Processing Analyst</div><div class="exp-date">Jul 2019 – Mar 2020</div></div>
-        <div class="exp-role-sub">Transaction Processing Analyst · Apr 2017 – Jun 2019</div>
-        <div class="exp-company"><strong>Accenture</strong> · Client: Google Wallet</div>
-        <ul class="exp-bullets">
-          <li>Conducted gap analysis on risk and compliance workflows for Google Wallet, surfacing issues that shaped two quarters of the feature roadmap</li>
-          <li>Identified automation opportunities that removed manual handoff points and reduced operational friction</li>
-        </ul>
-        <ul class="exp-bullets extra" id="extra-accenture">
-          <li>Learned to influence without formal authority — drove roadmap alignment between engineering leads and risk SMEs, a skill that compressed my growth trajectory in later roles</li>
-        </ul>
-        <button class="show-more-btn" data-target="extra-accenture"></button>
-        <div class="badge-chips">
-          <span class="badge badge-pink">Google Wallet</span>
-          <span class="badge badge-indigo">Risk & Compliance</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="tools-strip reveal" style="margin-top:2.5rem">
-    <span class="tool-chip">Jira</span><span class="tool-chip">Azure DevOps</span><span class="tool-chip">Figma</span>
-    <span class="tool-chip">Lovable</span><span class="tool-chip">Claude Code</span><span class="tool-chip">SQL</span>
-    <span class="tool-chip">Power BI</span><span class="tool-chip">Salesforce</span><span class="tool-chip">React</span>
-    <span class="tool-chip">OpenAI API</span><span class="tool-chip">Agile / Scrum</span>
-  </div>
-</section>
 
 <!-- WORK -->
 <section id="work">
@@ -738,6 +584,140 @@ footer { position: relative; z-index: 1; text-align: center; padding: 2rem; bord
   </div>
 </div>
 
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Career</div>
+  <h2 class="section-title reveal">Work <span>Experience</span></h2>
+  <div class="timeline">
+
+    <!-- RETISIO -->
+    <div class="tl-item reveal">
+      <div class="tl-dot" style="background:var(--indigo);box-shadow:0 0 8px var(--indigo)"></div>
+      <div class="exp-card">
+        <div class="exp-top"><div class="exp-title">Technical Product Manager</div><div class="exp-date">Dec 2025 – Apr 2026</div></div>
+        <div class="exp-company"><strong>Retisio</strong> · Commerce SaaS</div>
+        <ul class="exp-bullets">
+          <li>Drove the 0→1 multi-tenant SaaS transformation — mapped the full tenant lifecycle before engineering started, cutting client onboarding from 6–12 months to self-serve in days</li>
+          <li>Shipped the Micamp payment integration end-to-end in 4 weeks — owned partner onboarding, tested authentication, authorization, and refund APIs, and demonstrated the full flow live in production</li>
+          <li>Introduced Lovable and Claude Code to the engineering org — the team had no prior exposure; partnered with the CTO to establish AI-assisted development workflows</li>
+          <li>Built AI-generated UX prototypes in Lovable when design resources were delayed, presented them to client Matcotools, and secured full sign-off — keeping delivery on track</li>
+          <li>Brought product structure to the Search Intelligence (SIT) initiative — defined use cases and load-testing priorities across vector and neural search alongside engineering and data science</li>
+          <li>Operated as the connective tissue between CEO, CTO, and engineering — translated headless commerce and tenant isolation constraints into sprint-ready specs</li>
+        </ul>
+        <div class="badge-chips">
+          <span class="badge badge-indigo">Multi-tenant SaaS</span>
+          <span class="badge badge-pink">Payment Integration</span>
+          <span class="badge badge-cyan">Search Intelligence</span>
+          <span class="badge badge-amber">AI Tooling</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIRSTSOURCE -->
+    <div class="tl-item reveal">
+      <div class="tl-dot" style="background:var(--pink);box-shadow:0 0 8px var(--pink)"></div>
+      <div class="exp-card">
+        <div class="exp-top"><div class="exp-title">Product Manager, Contract</div><div class="exp-date">Apr 2025 – Oct 2025</div></div>
+        <div class="exp-company"><strong>Firstsource</strong> · BPO & Analytics</div>
+        <ul class="exp-bullets">
+          <li>Designed a CEO/CXO dashboard integrating 30+ KPIs across Salesforce and HRMS for real-time visibility into revenue and operations</li>
+          <li>Automated the underlying data pipelines, cutting reporting effort by 80% and enabling faster executive decisions</li>
+        </ul>
+        <div class="badge-chips">
+          <span class="badge badge-pink">Executive Dashboards</span>
+          <span class="badge badge-indigo">Data Pipelines</span>
+          <span class="badge badge-cyan">Salesforce + HRMS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARAMOUNT / FARMTOPLATE -->
+    <div class="tl-item reveal">
+      <div class="tl-dot" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div>
+      <div class="exp-card">
+        <div class="exp-top"><div class="exp-title">Product Manager, FarmToPlate</div><div class="exp-date">Jan 2024 – Mar 2025</div></div>
+        <div class="exp-company"><strong>Paramount Software Solutions</strong> · Supply Chain Tech</div>
+        <ul class="exp-bullets">
+          <li>Led the monolith-to-microservices migration, reducing platform downtime by 30% and unblocking three parallel feature teams</li>
+          <li>Embedded OTIF tracking and real-time route optimization into delivery workflows, improving delivery accuracy by 20% and cutting food wastage by 15%</li>
+          <li>Collaborated with data scientists to embed AI analytics into operator workflows, reducing order completion time by 25% and improving customer retention by 15%</li>
+          <li>Defined acceptance criteria for ML-powered features that non-technical stakeholders could validate before release</li>
+        </ul>
+        <div class="badge-chips">
+          <span class="badge badge-cyan">Supply Chain</span>
+          <span class="badge badge-indigo">Microservices</span>
+          <span class="badge badge-pink">AI/ML Integration</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASHFREE -->
+    <div class="tl-item reveal">
+      <div class="tl-dot" style="background:var(--amber);box-shadow:0 0 8px var(--amber)"></div>
+      <div class="exp-card">
+        <div class="exp-top"><div class="exp-title">Assistant Manager, Risk and Compliance — Payments Product</div><div class="exp-date">Aug 2022 – Nov 2023</div></div>
+        <div class="exp-company"><strong>Cashfree Payments</strong> · Fintech</div>
+        <ul class="exp-bullets">
+          <li>Owned product strategy for an AI-powered risk intelligence platform, increasing threat detection efficiency by 20% and cutting compliance escalations from 350 to 230 a month</li>
+          <li>Redesigned the merchant risk scoring logic, reducing noisy monthly alerts by 50% and improving classification accuracy</li>
+          <li>Improved real-time monitoring accuracy by 30%, which reduced merchant churn by 10%</li>
+          <li>Coordinated cross-functional delivery with legal, compliance, data science, and engineering under regulatory timelines</li>
+        </ul>
+        <div class="badge-chips">
+          <span class="badge badge-amber">Risk Intelligence</span>
+          <span class="badge badge-pink">Merchant Scoring</span>
+          <span class="badge badge-cyan">Fraud Detection</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- IBM -->
+    <div class="tl-item reveal">
+      <div class="tl-dot" style="background:var(--indigo-light);box-shadow:0 0 8px var(--indigo-light)"></div>
+      <div class="exp-card">
+        <div class="exp-top"><div class="exp-title">Senior AML/KYC Analyst</div><div class="exp-date">Aug 2020 – Jul 2022</div></div>
+        <div class="exp-company"><strong>IBM</strong> · Client: Investors Bank</div>
+        <ul class="exp-bullets">
+          <li>Partnered with data scientists to tune fraud detection algorithms, cutting false positives by 20% and improving onboarding accuracy</li>
+          <li>Built real-time risk intelligence dashboards, improving decision accuracy by 15% and reducing manual review time by 40%</li>
+          <li>Delivered directly to a US banking client under IBM's consulting structure, building the stakeholder rigor that shaped the rest of my PM career</li>
+        </ul>
+        <div class="badge-chips">
+          <span class="badge badge-indigo">AML/KYC</span>
+          <span class="badge badge-cyan">Risk Dashboards</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCENTURE -->
+    <div class="tl-item reveal">
+      <div class="tl-dot" style="background:var(--pink);box-shadow:0 0 8px var(--pink)"></div>
+      <div class="exp-card">
+        <div class="exp-top"><div class="exp-title">Senior Transaction Processing Analyst</div><div class="exp-date">Jul 2019 – Mar 2020</div></div>
+        <div class="exp-role-sub">Transaction Processing Analyst · Apr 2017 – Jun 2019</div>
+        <div class="exp-company"><strong>Accenture</strong> · Client: Google Wallet</div>
+        <ul class="exp-bullets">
+          <li>Conducted gap analysis on risk and compliance workflows for Google Wallet, surfacing issues that shaped two quarters of the feature roadmap</li>
+          <li>Identified automation opportunities that removed manual handoff points and reduced operational friction</li>
+          <li>Learned to influence without formal authority — drove roadmap alignment between engineering leads and risk SMEs, a skill that compressed my growth trajectory in later roles</li>
+        </ul>
+        <div class="badge-chips">
+          <span class="badge badge-pink">Google Wallet</span>
+          <span class="badge badge-indigo">Risk & Compliance</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tools-strip reveal" style="margin-top:2.5rem">
+    <span class="tool-chip">Jira</span><span class="tool-chip">Azure DevOps</span><span class="tool-chip">Figma</span>
+    <span class="tool-chip">Lovable</span><span class="tool-chip">Claude Code</span><span class="tool-chip">SQL</span>
+    <span class="tool-chip">Power BI</span><span class="tool-chip">Salesforce</span><span class="tool-chip">React</span>
+    <span class="tool-chip">OpenAI API</span><span class="tool-chip">Agile / Scrum</span>
+  </div>
+</section>
 <!-- EDUCATION -->
 <section id="education">
   <div class="section-label">Academic</div>
@@ -779,10 +759,6 @@ footer { position: relative; z-index: 1; text-align: center; padding: 2rem; bord
         <div class="contact-icon">💼</div>
         <div><div class="contact-label">LinkedIn</div><div class="contact-val" style="color:var(--cyan)">linkedin.com/in/tripathi-surabhi</div></div>
       </div>
-      <div class="contact-card reveal" onclick="window.open('https://www.notion.so/Surabhi-Tripathi-1cebf943e23b803c8123c47058c10393','_blank')">
-        <div class="contact-icon">📋</div>
-        <div><div class="contact-label">Notion Portfolio</div><div class="contact-val" style="color:var(--pink)">View Full Portfolio →</div></div>
-      </div>
     </div>
     <div class="contact-avatar-wrap reveal">
       <div class="ripple-wrap"><div class="ripple"></div><div class="ripple"></div><div class="ripple"></div><div class="contact-avatar-inner">ST</div></div>
@@ -796,7 +772,7 @@ footer { position: relative; z-index: 1; text-align: center; padding: 2rem; bord
 window.addEventListener('load', () => { setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2200); });
 
 const dot = document.getElementById('cursor-dot');
-document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; });
+document.addEventListener('mousemove', e => { dot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 2}px)`; });
 document.querySelectorAll('a, button, .exp-card, .proj-card, .contact-card, .tool-chip').forEach(el => {
   el.addEventListener('mouseenter', () => dot.classList.add('hover'));
   el.addEventListener('mouseleave', () => dot.classList.remove('hover'));
@@ -837,14 +813,6 @@ const io = new IntersectionObserver((entries) => {
   entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); io.unobserve(entry.target); } });
 }, { threshold: 0.1 });
 revealEls.forEach(el => io.observe(el));
-
-document.querySelectorAll('.show-more-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = document.getElementById(btn.getAttribute('data-target'));
-    target.classList.toggle('open');
-    btn.classList.toggle('open');
-  });
-});
 
 const storyToggle = document.getElementById('storyToggle');
 const storyBody = document.getElementById('storyBody');
